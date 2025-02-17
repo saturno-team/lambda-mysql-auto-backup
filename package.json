@@ -1,0 +1,33 @@
+{
+  "name": "lambda-mysql-auto-backup",
+  "version": "1.0.0",
+  "description": "Function to be executed inside lambda to perform mysql backups",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/saturno-team/lambda-mysql-auto-backup.git"
+  },
+  "keywords": [
+    "lambda",
+    "mysql",
+    "backup",
+    "mysql"
+  ],
+  "author": "icleitoncosta",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/saturno-team/lambda-mysql-auto-backup/issues"
+  },
+  "homepage": "https://github.com/saturno-team/lambda-mysql-auto-backup#readme",
+  "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.750.0",
+    "aws-sdk": "^2.1692.0",
+    "dotenv": "^16.4.7",
+    "mysqldump": "^3.2.0",
+    "uuid": "^11.0.5"
+  }
+}
