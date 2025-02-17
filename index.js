@@ -32,7 +32,7 @@ export const handler = async (event) => {
       bucket: process.env.AWS_BUCKET,
     });
     console.log('Backup successful!');
-    
+
   } catch (error) {
     console.log(error);
   }
@@ -82,5 +82,3 @@ async function uploadFile(
       return error;
     }
   }
-
-handler();
