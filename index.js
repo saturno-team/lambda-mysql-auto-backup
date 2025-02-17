@@ -9,7 +9,20 @@ import {
 
 export const handler = async (event) => {
   try {
+    const awsCreds = await getAWSCredentials();
     dotenv.config();
+    if(!process?.env?.AWS_ACCESS_KEY_ID) {
+        const config = {
+            apiVersion: 'latest',
+            credentials: {
+                accessKeyId: awsCreds.AWS_ACCESS_KEY_ID,
+                secretAccessKey: awsCreds.AWS_SECRET_ACCESS_KEY,
+            },
+            region: config.region_aws,
+        };
+        aws.config.update(this.config);
+    }
+
     const credentials = await getDatabaseCredentials();
     console.log('Credentials recovered');
 
@@ -29,7 +42,7 @@ export const handler = async (event) => {
     await uploadFile(
       dump.data, 'text/sql', {
       key: filename,
-      bucket: process.env.AWS_BUCKET,
+      bucket: process?.env?.AWS_BUCKET ?? awsCreds.AWS_BUCKET,
     });
     console.log('Backup successful!');
 
@@ -44,16 +57,39 @@ export const handler = async (event) => {
 
 async function getDatabaseCredentials() {
     try {
+        const awsCreds = await getAWSCredentials();
         const client = new SecretsManagerClient({
-            region: process.env.AWS_REGION,
+            region: process?.env?.AWS_REGION || awsCreds.AWS_REGION,
         });
         const response = await client.send(
         new GetSecretValueCommand({
-            SecretId: process.env.SECRET_NAME,
+            SecretId: process?.env?.SECRET_NAME || awsCreds.SECRET_NAME,
             VersionStage: "AWSCURRENT",
         })
         );
         return JSON.parse(response.SecretString);
+    } catch (error) {
+        console.error("Error in search secret:", error);
+        throw new Error("Error on search credentials");
+    }
+}
+
+async function getAWSCredentials() {
+    try {
+        const client = new SecretsManagerClient({
+            region: 'sa-east-1',
+        });
+        try {
+            const response = await client.send(
+            new GetSecretValueCommand({
+                SecretId: 'prod/AWS/secrets',
+                VersionStage: "AWSCURRENT",
+            })
+            );
+            return JSON.parse(response.SecretString);
+        } catch (error) {
+            return {};
+        }
     } catch (error) {
         console.error("Error in search secret:", error);
         throw new Error("Error on search credentials");
