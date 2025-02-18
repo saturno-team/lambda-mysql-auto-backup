@@ -27,3 +27,4 @@ Function to be executed inside lambda to perform mysql backups
 ```
 
 10. Create a function in AWS Lampda with name and set secret in Github secrets with LAMBDA_FUNCTION_NAME
+11. Update timeout (1min) and memory used in lambda

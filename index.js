@@ -114,7 +114,7 @@ async function uploadFile(
       };
       return await client.upload(params).promise();
     } catch (error) {
-      logger.error(error);
+      console.error(error);
       return error;
     }
   }
