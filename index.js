@@ -26,7 +26,7 @@ export const handler = async (event) => {
     const credentials = await getDatabaseCredentials();
     console.log('Credentials recovered');
 
-    const filename = `cleiton_backup_mysql_${new Date().toJSON().slice(0, 10)}_${Math.random().toString(36).slice(2, 10)}.sql`;
+    const filename = `backup_mysql_${new Date().toJSON().slice(0, 10)}_${Math.random().toString(36).slice(2, 10)}.sql`;
 
     const { dump } = await mysqldump({
       connection: {
